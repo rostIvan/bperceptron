@@ -1,4 +1,4 @@
-def multiply_vectors(v, w):
+def dot_vectors(v, w):
     if len(v) != len(w):
         raise Exception("WTF!!!")
     return sum(v_i * w_i for v_i, w_i in zip(v, w))
