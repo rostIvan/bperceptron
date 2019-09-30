@@ -60,7 +60,7 @@ class BinaryPerceptron:
                         for w_i, x_i in zip(self.weights, inputs)]
 
         self.on_weights_change(before, self.weights)
-        self.train()
+        self.train(learning_rate)
 
     def weights_change_listener(self, callback: Callable[[list, list], None]):
         self.on_weights_change = callback
