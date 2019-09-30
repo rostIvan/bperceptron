@@ -27,6 +27,7 @@ class BinaryPerceptron:
         self.weights: List[float] = self.default_weights
         self.on_weights_change = None
         self.counter = 0
+        self.weights_shift_counter = 0
 
     def activation_function(self, x) -> int:
         return 1 if x >= self.threshold else 0
@@ -42,6 +43,7 @@ class BinaryPerceptron:
                                      actual=prediction,
                                      expected=expected,
                                      learning_rate=learning_rate)
+                self.weights_shift_counter += 1
             self.counter += 1
 
     def predict(self, x1, x2, x3) -> int:
@@ -77,4 +79,5 @@ if __name__ == '__main__':
                expected)
               for x1, x2, x3, expected in truth_table]
     print(f'\n{tabulate(output, headers=fields)}')
-    print(f'\nTook {model.counter} iterations')
+    print(f'\nTook {model.counter} iterations, '
+          f' Weights shifts {model.weights_shift_counter}')
