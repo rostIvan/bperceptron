@@ -1,5 +1,4 @@
 #! /usr/bin/env python3
-import math
 from dataclasses import dataclass
 from typing import List, Callable
 
@@ -19,7 +18,7 @@ class PredictionModel:
 
 
 class BinaryPerceptron:
-    default_weights = [0.1, 0.1, 0.1]
+    default_weights = [0.1, 0.2, 0.1]
     threshold = 1.7
 
     def __init__(self, input_layer: List[tuple]) -> None:
@@ -33,6 +32,7 @@ class BinaryPerceptron:
         return 1 if x >= self.threshold else 0
 
     def train(self, learning_rate=0.7):
+        weights_changed = False
         for x1, x2, x3, expected in self.input_layer:
             m = PredictionModel(weights=self.weights,
                                 inputs=(x1, x2, x3),
@@ -43,8 +43,11 @@ class BinaryPerceptron:
                                      actual=prediction,
                                      expected=expected,
                                      learning_rate=learning_rate)
+                weights_changed = True
                 self.weights_shift_counter += 1
             self.counter += 1
+        if weights_changed:
+            self.train(learning_rate)
 
     def predict(self, x1, x2, x3) -> int:
         m = PredictionModel(weights=self.weights,
@@ -60,7 +63,6 @@ class BinaryPerceptron:
                         for w_i, x_i in zip(self.weights, inputs)]
 
         self.on_weights_change(before, self.weights)
-        self.train(learning_rate)
 
     def weights_change_listener(self, callback: Callable[[list, list], None]):
         self.on_weights_change = callback
